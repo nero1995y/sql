@@ -1,0 +1,43 @@
+-- 루시와 엘라 찾기
+SELECT ANIMAL_ID, NAME, SEX_UPON_INTAKE
+  FROM ANIMAL_INS
+ WHERE NAME IN ('Lucy', 'Ella', 'Pickle', 'Rogan', 'Sabrina', 'Mitty')
+ 
+ -- 이름에 e이 들어가는 동물 찾기 
+
+ SELECT ANIMAL_ID, NAME
+  FROM ANIMAL_INS
+ WHERE NAME LIKE '%EL%' 
+   AND ANIMAL_TYPE = 'Dog'
+ ORDER BY NAME ASC
+ 
+
+ -- 중성화 여부
+
+ SELECT ANIMAL_ID,
+        NAME,
+        (CASE 
+          WHEN SEX_UPON_INTAKE LIKE 'Neutered%'
+          THEN 'O'
+          WHEN SEX_UPON_INTAKE LIKE 'Spayed%' 
+          THEN 'O'
+          ELSE 'X'
+        END) AS '중성화'
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID ASC
+
+
+
+SELECT ANIMAL_ID, NAME, IF(SEX_UPON_INTAKE LIKE 'Intact%', 'X', 'O') AS '중성화'
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID;
+
+
+
+-- 오랜 기간 보호한 동물(2)
+SELECT AI.ANIMAL_ID, AI.NAME
+  FROM ANIMAL_INS AS AI 
+  JOIN ANIMAL_OUTS AS AO
+    ON AI.ANIMAL_ID = AO.ANIMAL_ID
+ ORDER BY (AI.DATETIME - AO.DATETIME) ASC
+ LIMIT 2
